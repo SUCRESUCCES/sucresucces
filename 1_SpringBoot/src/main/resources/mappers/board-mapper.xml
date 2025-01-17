@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kh.springboot.board.model.mapper.BoardMapper">
+
+	<select id="getlistCount" resultType="_int">
+		select count(*)
+		from board
+		where board_status = 'Y' and board_type = #{i}
+	</select>
+	
+	<select id="selectBoardList" resultMap="boardResultSet">
+		select *
+		from board
+			join member on(board_writer = id)
+		where board_status = 'Y' and board_type = #{i}
+		order by board_id desc
+	</select>
+	<resultMap type="Board" id="boardResultSet">
+		<result column="BOARD_CREATE_DATE" property="createDate"/>
+		<result column="BOARD_MODIFY_DATE" property="modifyDate"/>
+		<result column="BOARD_STATUS" property="status"/>
+	</resultMap>
+	
+	
+	<!-- selectKey 적용
+       insert나 update시 사용할 키를 조회해서 파라미터로 전달받아 객체 필드에 대입
+    -->
+   <insert id="insertBoard">					<!-- selectKey안의 seq_bid를 Vo안의 boardId에 매핑해준다 -->
+      <selectKey order="BEFORE" resultType="_int" keyProperty="boardId">
+      <!-- 수행되기 전에 내가 먼저 수행이 되겠다 -->
+         select seq_bid.nextval from dual
+      </selectKey>
+      insert into board
+      values(#{boardId}, #{boardTitle}, #{boardWriter}, #{boardContent},
+            default, sysdate, sysdate, default, #{boardType})
+   </insert>
+	
+	<select id="selectBoard">
+		select * 
+		from board
+			join member on(board_writer = id)
+		where board_status = 'Y' and board_id = #{bId}
+	</select>
+	
+	<update id="updateCount">
+		update board 
+		set board_count = board_count + 1 
+		where board_id = #{bId}
+	</update>
+
+	<update id="updateBoard">
+		update board
+		set board_Title = #{boardTitle}, board_content=#{boardContent}, board_modify_date=sysdate, board_type=#{boardType}
+		where board_id=#{boardId}
+	</update>
+	
+	<update id="deleteBoard">
+		update board
+		set board_status = 'N'
+		where board_id = #{bId}
+	</update>
+	
+	<select id="selectAttmBoardList" resultType="Attachment">
+		select *
+		from attachment
+		where ATTM_STATUS = 'Y' 
+		<!-- if: 동적 쿼리 -->
+		<if test="bId == null">
+			and attm_level = 0
+		</if>
+		<if test="bID != null">
+			and ref_board_id = #{bId}
+		</if>
+		order by attm_id
+	</select>
+	
+	<insert id="insertAttm">
+		insert all
+		<foreach collection="list" item="item" separator=" ">
+		into attachment
+		values(new_aid, #{item.refBoardId}, #{item.originalName}, #{item.renameName}, #{item.attmPath}, #{item.attmLevel}, default)
+		<!-- new_aid : seq_aid.nextval  -->
+		</foreach>
+		select * from dual
+		<!-- insert all 에서 시퀀스 한번 호출 됐으면 값이 유지됨 -->
+		<!-- insert all 안에 들어가있으면 시퀀스가 한번 올라가고 끝남, function 안에 시퀀스를 써서 눈가림 -->
+	</insert>
+	
+	<delete id="deleteAttm">
+		<!-- 전달받은 rename에 해당하는 첨부파일 데이터 삭제 -->
+		delete from attachment
+		where rename_name in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<update id="updateAttmLevel">
+		<!-- 해당 게시글의 기존 파일 중 하나를 level = 0으로 수정 -->
+		<!-- 가장 빠른애 -->
+		update attachment
+		set ATTM_LEVEL = 0
+		where attm_id = (select min(attm_id)
+						 from attachment
+						 where ref_board_id = #{boardId})
+	</update>
+	
+	<!-- <update id="statusNAttm">
+		update attachment
+		set attm_status = 'N'
+		where ref_board_id = #{bId}
+	</update> 
+	-->
+	
+	<select id="selectTop" resultMap="boardResultSet">
+		SELECT *
+		FROM(SELECT *
+		        FROM BOARD
+		             JOIN MEMBER ON(ID = BOARD_WRITER)
+		        WHERE BOARD_STATUS = 'Y'
+		        ORDER BY BOARD_COUNT DESC)
+		WHERE ROWNUM <![CDATA[<]]>= 5
+	</select>
+	
+</mapper>
