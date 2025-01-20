@@ -1,7 +1,11 @@
 package kh.springboot.board.controller;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,10 +14,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,6 +31,7 @@ import kh.springboot.board.model.mapper.BoardMapper;
 import kh.springboot.board.model.service.BoardService;
 import kh.springboot.board.model.vo.Board;
 import kh.springboot.board.model.vo.PageInfo;
+import kh.springboot.board.model.vo.Reply;
 import kh.springboot.common.Pagination;
 import kh.springboot.member.model.vo.Member;
 import lombok.RequiredArgsConstructor;
@@ -86,10 +95,12 @@ public class BoardController {
 		}
 		// bId, id를 service에 넘겨서 글쓴이 비교 로직 작성
 		Board b = bService.selectBoard(bId, id);
+		ArrayList<Reply> list = bService.selectReplyList(bId);
 		// 게시글이 존재하면, 게시글 데이터(b)와 페이지(page)를 /views/board/detail.html로 전달
 		// ㄴ write.html 수정해서 사용
 		// 게시글이 존재하지 않으면, 사용자 정의 예외 발생
 		if (b != null) {
+			mv.addObject("list", list);
 			mv.addObject("b", b).addObject("page", page).setViewName("detail");
 			return mv;
 		} else {
@@ -192,7 +203,91 @@ public class BoardController {
 
 		}	
 	}
-	
+	   
+//	   // JSON 버전
+//	   // @GetMapping("rinsert") : HttpServletResponse 이거 사용했을 때!	
+//	   @GetMapping(value="rinsert",  produces="application/json; charset=UTF-8")	// 4. response에 컨텐트타입을 관리(제어,관리, 설정)을 할 수 있게 하는 속성
+//	   @ResponseBody	// 3. @ResponseBody추가
+//	   public String insertReply(@ModelAttribute Reply r /*, HttpServletResponse response*/) {
+//		   	int result = bService.insertReply(r);
+//		   	ArrayList<Reply> list = bService.selectReplyList(r.getRefBoardId());
+//		   
+//		   	JSONArray array = new JSONArray();	// 1. JSONArray 먼저 만들어준다
+//		   
+//			   for(Reply R : list) {	// 필요한 것만 put 해준다.			
+//				   JSONObject json = new JSONObject();						// 2. Json 형식으로 받아주기 위해 Object 생성
+//				   json.put("replyId", R.getReplyId());
+//				   json.put("replyContent", R.getReplyContent());
+//				   json.put("refBoardId", R.getRefBoardId());
+//				   json.put("replyWriter", R.getReplyWriter());
+//				   json.put("nickName", R.getNickName());						
+//				   json.put("replyCreateDate", R.getReplyCreateDate());
+//				   json.put("replyModifyDate", R.getReplyModifyDate());
+//				   json.put("replyStatus", R.getReplyStatus());
+//				   
+//				   array.put(json);
+//				   
+//			   }
+//				
+//			   // response.setContentType("application/json; charset=UTF-8");
+//			   return array.toString();
+//	   }
+	   
+//	   // GSON 버전
+//	   @GetMapping("rinsert")	
+//	   public void insertReply(@ModelAttribute Reply r, HttpServletResponse response) {
+//		   	int result = bService.insertReply(r);
+//		   	ArrayList<Reply> list = bService.selectReplyList(r.getRefBoardId());
+//		   	// gson은 reply의 vo 따라감
+//		   	// json은 내가 쓴 이름대로 뷰에 넘어감
+//		   	
+//		   	response.setContentType("application/json; charset=UTF-8");
+//			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+//		   	try {
+//				gson.toJson(list, response.getWriter());
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}  
+//	   }
+
+	   // jackson 버전
+	   @GetMapping(value="rinsert", produces="application/json; charset=UTF-8")
+	   @ResponseBody
+	   public String insertReply(@ModelAttribute Reply r) {
+		   // 저장
+		   int result = bService.insertReply(r);
+		   // 가져오기
+		   ArrayList<Reply> list = bService.selectReplyList(r.getRefBoardId());
+		
+		   ObjectMapper om = new ObjectMapper();
+		   
+		   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		   om.setDateFormat(sdf);
+		   
+		   String strJson = null;
+		   try {
+			strJson = om.writeValueAsString(list);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		   return strJson;
+	   }
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
 }
 
 

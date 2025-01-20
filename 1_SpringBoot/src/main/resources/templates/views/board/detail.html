@@ -39,13 +39,37 @@
 						<th:block
 							th:if="${session.loginUser != null && session.loginUser.id == b.boardWriter}">
 
-							<button class="w-100 btn btn-success btn-lg" type="button"
-								id="updateForm">UPDATE</button>
-							<button class="w-100 btn btn-secondary btn-lg" type="button"
-								id="deleteModal">DELETE</button>
+							<button class="w-100 btn btn-success btn-lg" type="button" id="updateForm">UPDATE</button>
+							<button class="w-100 btn btn-secondary btn-lg" type="button" id="deleteModal">DELETE</button>
 						</th:block>
-						<button class="w-100 btn btn-dark btn-lg" type="button"
-							onclick="javascript:history.back();">BACK</button>
+						<button class="w-100 btn btn-dark btn-lg" type="button" onclick="javascript:history.back();">BACK</button>
+						
+						<br>
+						
+						<div class="input-group">
+							<span class="input-group-text">REPLY<br>CONTENT</span>
+							<textarea class="form-control" rows="3" id="replyContent" style="resize:none;"></textarea>
+							<button class="btn btn-outline-success btn-lg" id="replySubmit" type="button" th:disabled="${session.loginUser == null}">SUBMIT</button>
+						</div>
+						
+						<br>
+						
+						<table class="table">
+							<thead>
+								<tr>
+									<th width="130px">작성자</th>
+									<th>작성내용</th>
+									<th width="130px">작성일자</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="r: ${list}">
+									<td>[[${r.nickName}]]</td>
+									<td th:text="${r.replyContent}"></td>
+									<td>[[${r.replyModifyDate}]]</td>
+							</tbody>
+						</table>
+						
 					</div>
 				</form>
 			</div>
@@ -73,7 +97,7 @@
 		</div>
 	</div>
 
-	<script>
+	<script th:inline="javascript">
       window.onload = () => {
          const upd = document.getElementById('updateForm');
          const form = document.getElementById('detailForm');
@@ -83,15 +107,60 @@
                form.submit();
             });
          }
-         
-         document.getElementById('deleteModal').addEventListener('click', () => {
+         const deleteModal = document.getElementById('deleteModal');
+         if(deleteModal != null){
+         deleteModal.addEventListener('click', () => {
         	 $('#modalChoice').modal('show');
          });
+        }
          
          document.getElementById('delete').addEventListener('click', () => {
         	 form.action = '/board/delete';
         	 form.submit();
          });
+         
+         /*<![CDATA[*/
+         document.getElementById('replySubmit').addEventListener('click', () => {
+            $.ajax({
+               url: '/board/rinsert',
+               data: {
+                  replyContent:document.getElementById('replyContent').value, 
+                  refBoardId: /*[[${b.boardId}]]*/1,
+                  replyWriter: /*[[${session.loginUser != null ? session.loginUser.id : ''}]]*/'user01'
+                  },
+               success: data => {
+   				console.log(data);
+            	const tbody = document.querySelector('tbody');
+   				tbody.innerHTML = '';
+   				
+   				for(const r of data){
+   					const tr = document.createElement('tr');
+   					
+					const nickTd = document.createElement('td');
+					const nickVal = document.createTextNode(r.nickName);
+					nickTd.append(nickVal);
+
+					const rContentTd = document.createElement('td');
+					const rContentVal = document.createTextNode(r.replyContent);
+					rContentTd.append(rContentVal);
+
+					const rDateTd = document.createElement('td');
+					rDateTd.innerText = r.replyModifyDate;
+
+					tr.append(nickTd);
+					tr.append(rContentTd);
+					tr.innerHTML += '<td>' + r.replyModifyDate + '</td>'
+					
+					tbody.append(tr);
+   				}
+   				document.getElementById('replyContent').value = '';
+               },
+               error: data => {
+                  console.log(data);
+               }
+            });
+         });
+         /*]]>*/
       }
    </script>
 
