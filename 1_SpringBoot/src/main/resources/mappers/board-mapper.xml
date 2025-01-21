@@ -135,4 +135,9 @@
 		values(seq_rid.nextval, #{replyContent}, #{refBoardId}, #{replyWriter}, sysdate, sysdate, default)
 	</insert>
 	
+	<delete id="deleteReply">
+		delete from reply
+		where REPLY_ID = #{rId}
+	</delete>
+	
 </mapper>

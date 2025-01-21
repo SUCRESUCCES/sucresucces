@@ -45,6 +45,8 @@ public interface BoardMapper {
 	ArrayList<Reply> selectReplyList(int bId);
 
 	int insertReply(Reply r);
+
+	int deleteReply(int rId);
 	
 
 }
