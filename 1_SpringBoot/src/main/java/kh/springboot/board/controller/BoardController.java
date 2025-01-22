@@ -281,6 +281,11 @@ public class BoardController {
 		
 	   }
 	   
+	   @GetMapping("rupdate")
+	   @ResponseBody
+	   public int updateReply(@ModelAttribute Reply r) {
+		   return bService.updateReply(r);
+	   }
 	   
 	   
 	   
@@ -290,12 +295,4 @@ public class BoardController {
 	   
 	   
 	   
-	   
-	   
-	   
-	   
-}
-
-
-
-
+} 

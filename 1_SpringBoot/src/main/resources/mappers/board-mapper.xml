@@ -140,4 +140,10 @@
 		where REPLY_ID = #{rId}
 	</delete>
 	
+	<update id="updateReply">
+		update reply
+		set REPLY_CONTENT =#{replyContent},
+			REPLY_MODIFY_DATE = sysdate
+		where REPLY_ID = #{replyId}
+	</update>
 </mapper>
