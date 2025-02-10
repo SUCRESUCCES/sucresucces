@@ -1,9 +1,10 @@
 package kh.springboot.member.controller;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +23,7 @@ import kh.springboot.member.model.exception.MemberException;
 import kh.springboot.member.model.service.MemberService;
 import kh.springboot.member.model.vo.Member;
 import lombok.RequiredArgsConstructor;
-
+import lombok.extern.slf4j.Slf4j;
 
 // 컨트롤러 역할을 할 bean 생성
 // 프레임워크 객체생성
@@ -30,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @SessionAttributes("loginUser")
 @RequestMapping("/member/")
+@Slf4j
 public class MemberController {
 
 	// 의존성 주입 1. 필드 주입 @Autowired
@@ -44,6 +46,8 @@ public class MemberController {
 
 	private final BCryptPasswordEncoder bcrypt;
 
+	private Logger log = LoggerFactory.getLogger(MemberController.class);
+	
 	@GetMapping("signIn")
 	// 로그인 화면 연결 메소드
 	public String signIn() {
@@ -117,8 +121,29 @@ public class MemberController {
 
 	@GetMapping("/enroll")
 	public String enroll() {
+		// 로그 레벨 : DEBUG INFO WARN < ERROR < FATAL
+		// fatal		: 아주 심각한 에러
+		// error 		: 어떤 요청 처리 중 문제 발생
+		// warn			: 프로그램 실행에는 문제가 없지만 향후 시스템 에러의 원인이 될 수 있다는 경고성 메세지
+		// info			: 정보성 메세지
+		// debug		: 디버깅 용도로 사용하는 메세지
+		// trace		: 디버그 레벨이 너무 광범위한 것을 해결하기 위해 좀더 상세한 이벤트를 나타냄
+		
+		// log.fatal("회원가입 페이지"); 제공을 안함
+		log.error("회원가입 페이지");
+		log.warn("회원가입 페이지");
+		log.info("회원가입 페이지");
+		log.debug("회원가입 페이지");
+		log.trace("회원가입 페이지");
+		
 		return "enroll";
 	}
+	// 
+	
+	
+	
+	
+	
 
 	// @ModelAttribute
 	@PostMapping("/enroll")
@@ -187,12 +212,19 @@ public class MemberController {
 	// 암호화 후 로그인 + @SessionAttiributes
 	// @SessionAttributes는 model에 attribute가 추가될 때 자동으로 키 값을 찾아 세션에 등록하는 어노테이션
 	@PostMapping("/signIn")
-	public String login(Member m, Model model) {
+	public String login(Member m, Model model, @RequestParam("beforeURL") String beforeURL) {
 
 		Member loginUser = mService.login(m);
 		if (loginUser != null && bcrypt.matches(m.getPwd(), loginUser.getPwd())) {
 			model.addAttribute("loginUser", loginUser);
-			return "redirect:/home";
+			
+			// 로그인 시 계정이 관리자면 /admin/home으로 넘어가게 하기
+			if(loginUser.getIsAdmin().equals("Y")) {
+				return "redirect:/admin/home";
+			}else {
+				// log.debug(m.getId());
+				return "redirect:" + beforeURL;
+			}
 		} else {
 			throw new MemberException("로그인을 실패하였습니다.");
 		}

@@ -116,7 +116,7 @@ public class BoardController {
 	}
 
 	@PostMapping("update")
-	public String update(@ModelAttribute Board b, @RequestParam("page") int page) {
+	public String updateBoard(@ModelAttribute Board b, @RequestParam("page") int page) {
 		b.setBoardType(1);
 		int result = bService.updateBoard(b);
 		

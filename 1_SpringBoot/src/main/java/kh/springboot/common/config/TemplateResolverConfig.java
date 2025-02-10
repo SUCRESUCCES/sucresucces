@@ -33,4 +33,16 @@ public class TemplateResolverConfig {
 		return bResolver;
 	}
 	
+	@Bean
+	public ClassLoaderTemplateResolver adminResolber() {
+		ClassLoaderTemplateResolver aResolver =  new ClassLoaderTemplateResolver();
+		aResolver.setPrefix("templates/views/admin/");
+		aResolver.setSuffix(".html");
+		aResolver.setTemplateMode(TemplateMode.HTML);
+		aResolver.setCharacterEncoding("UTF-8");
+		aResolver.setCacheable(false);
+		aResolver.setCheckExistence(true);
+		return aResolver;
+	}
+	
 }
