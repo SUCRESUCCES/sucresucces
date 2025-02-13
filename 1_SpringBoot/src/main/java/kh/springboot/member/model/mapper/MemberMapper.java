@@ -32,5 +32,11 @@ public interface MemberMapper {
 
 	int updateProfile(HashMap<String, String> map);
 
+//	String findId(Member m);
+
+//	Member findPwd(Member m);
+
+	Member findInfo(Member m);
+
 
 }
