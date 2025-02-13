@@ -57,4 +57,16 @@ public class MemberService {
 		return mapper.updateProfile(map);
 	}
 
+//	public String findId(Member m) {
+//		return mapper.findId(m);
+//	}
+
+//	public Member findPwd(Member m) {
+//		return mapper.findPwd(m);
+//	}
+
+	public Member findInfo(Member m) {
+		return mapper.findInfo(m);
+	}
+
 }
