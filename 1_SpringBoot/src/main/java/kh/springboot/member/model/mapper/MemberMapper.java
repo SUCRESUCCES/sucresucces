@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.apache.ibatis.annotations.Mapper;
 
 import kh.springboot.member.model.vo.Member;
+import kh.springboot.member.model.vo.TodoList;
 
 @Mapper	// interface자체를 mapper로 연결 가능
 // -> 해당 Mapper의 풀네임이 mapper의 namespace
@@ -37,6 +38,10 @@ public interface MemberMapper {
 //	Member findPwd(Member m);
 
 	Member findInfo(Member m);
+
+	ArrayList<TodoList> selectTodoList(String id);
+
+	int insertTodo(TodoList todo);
 
 
 }
