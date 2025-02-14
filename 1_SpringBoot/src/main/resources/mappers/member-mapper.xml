@@ -29,7 +29,7 @@
 		values(#{id}, #{pwd}, #{name},
 		#{nickName}, #{email}, #{gender},
 		#{age}, #{phone}, #{address},
-		sysdate, sysdate, default, default)
+		sysdate, sysdate, default, default, null)
 	</insert>
 	
 	<select id="selectMyList" resultType="map">
@@ -102,4 +102,38 @@
    		where id = #{id}
    </update>
    
+<!--    <select id="findId" resultType="string">
+   		select id
+   		from member
+   		where email=#{email} and name =#{name} and member_status = 'Y'
+   </select>
+   
+   <select id="findPwd" resultType="Member">
+   		select *
+   		from member
+   		where email=#{email} and id=#{id} and member_status = 'Y'
+   </select> -->
+   
+   <select id="findInfo" resultType="Member">
+   		select *
+   		from member
+   		where member_status = 'Y'
+   		<if test="name != null">
+   			and email=#{email} and name=#{name}
+   		</if>
+   		<if test="name == null">
+   			and email=#{email} and id =#{id}
+   		</if>
+   </select>
+   
+   <select id="selectTodoList" resultType="TodoList">
+	   	select *
+	   	from todo_list
+	   	where writer = #{id}
+   </select>
+   
+   <insert id="insertTodo">
+	   	insert into todo_list
+	   	values(seq_lid.nextval, #{todo}, #{writer}, default, default)
+   </insert>
 </mapper>
