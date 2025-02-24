@@ -466,8 +466,17 @@ public class MemberController {
 		return mService.insertTodo(todo);
 	}
 	
+	@GetMapping("lupdate")
+	@ResponseBody
+	public int updateTodo(@ModelAttribute TodoList todo) {
+		return mService.updateTodo(todo);
+	}
 	
-	
+	@GetMapping("ldelete")
+	@ResponseBody
+	public int deleteTodo(@RequestParam("num") int num) {
+		return mService.deleteTodo(num);
+	}
 	
 	
 	}
