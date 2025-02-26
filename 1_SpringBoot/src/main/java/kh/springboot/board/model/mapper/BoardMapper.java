@@ -49,6 +49,8 @@ public interface BoardMapper {
 	int deleteReply(int rId);
 
 	int updateReply(Reply r);
+
+	ArrayList<Board> selectRecentBoards();
 	
 
 }
