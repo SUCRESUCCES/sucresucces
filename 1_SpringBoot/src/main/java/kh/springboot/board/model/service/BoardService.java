@@ -90,4 +90,8 @@ public class BoardService {
 	public int updateReply(Reply r) {
 		return mapper.updateReply(r);
 	}
+
+	public ArrayList<Board> selectRecentBoards() {
+		return mapper.selectRecentBoards();
+	}
 }
