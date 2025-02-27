@@ -47,5 +47,9 @@ public interface MemberMapper {
 
 	int deleteTodo(int num);
 
+	ArrayList<Member> selectMembers();
+
+	int updateMemberItem(HashMap<String, String> map);
+
 
 }

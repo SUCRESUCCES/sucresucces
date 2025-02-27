@@ -153,4 +153,13 @@
    		where todo_num = #{num}
    </delete>
    
+   <select id="selectMembers">
+   		select * from member
+   </select>
+   
+   <update id="updateMemberItem">
+	   		update member
+	   		set ${col} = #{val}
+	   		where id=#{id}
+   </update>
 </mapper>

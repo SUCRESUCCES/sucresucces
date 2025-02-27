@@ -59,7 +59,7 @@ public class MemberController {
 	private Logger log = LoggerFactory.getLogger(MemberController.class);
 	
 	// 빈 주입받기 위해 final
-	private final JavaMailSender mailSender;
+	//private final JavaMailSender mailSender;
 	
 	@GetMapping("signIn")
 	// 로그인 화면 연결 메소드
@@ -322,92 +322,93 @@ public class MemberController {
 		return count == 0 ? "usable" : "unusable";
 	}*/
 	
-	@GetMapping("checkValue")
-	@ResponseBody
-	public int checkValue(@RequestParam("value") String value, @RequestParam("column") String column) {
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("column", column);
-		map.put("value", value);
-		int count = mService.checkValue(map);
-		return count;
-		}
+//	Ajax Controller에서 RestController로 옮겨줌!!!
+//	@GetMapping("checkValue")
+//	@ResponseBody
+//	public int checkValue(@RequestParam("value") String value, @RequestParam("column") String column) {
+//		HashMap<String, String> map = new HashMap<String, String>();
+//		map.put("column", column);
+//		map.put("value", value);
+//		int count = mService.checkValue(map);
+//		return count;
+//		}
 	
-	@PostMapping("profile")
-	@ResponseBody
-	public int updateProfile(@RequestParam(value="profile", required=false) MultipartFile profile, Model model) {
-		//System.out.println(profile);
-		
-		Member m = (Member)model.getAttribute("loginUser");
-		
-		String savePath = "c:\\profiles";
-		File folder = new File(savePath);
-		if(!folder.exists()) folder.mkdirs();	// if문이 한줄이면 중괄호 생략 가능 두줄이상부터는 중괄호 생략 불가능.. 근데 중괄호 없는 것보다 있는게 좋긴함
-		
-		if(m.getProfile() != null) {
-			File f = new File(savePath + "\\" + m.getProfile());
-			f.delete();
-		}
-		
-		String renameFileName = null;
-		if(profile != null) {
-			
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-		int ranNum = (int)(Math.random()*1000000);
-		String originFileName = profile.getOriginalFilename();
-		renameFileName = sdf.format(new Date()) + ranNum + originFileName.substring(originFileName.lastIndexOf("."));
-		
-		try {
-			profile.transferTo(new File(folder + "\\" + renameFileName));
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
-		}
+//	@PostMapping("profile")
+//	@ResponseBody
+//	public int updateProfile(@RequestParam(value="profile", required=false) MultipartFile profile, Model model) {
+//		//System.out.println(profile);
+//		
+//		Member m = (Member)model.getAttribute("loginUser");
+//		
+//		String savePath = "c:\\profiles";
+//		File folder = new File(savePath);
+//		if(!folder.exists()) folder.mkdirs();	// if문이 한줄이면 중괄호 생략 가능 두줄이상부터는 중괄호 생략 불가능.. 근데 중괄호 없는 것보다 있는게 좋긴함
+//		
+//		if(m.getProfile() != null) {
+//			File f = new File(savePath + "\\" + m.getProfile());
+//			f.delete();
+//		}
+//		
+//		String renameFileName = null;
+//		if(profile != null) {
+//			
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+//		int ranNum = (int)(Math.random()*1000000);
+//		String originFileName = profile.getOriginalFilename();
+//		renameFileName = sdf.format(new Date()) + ranNum + originFileName.substring(originFileName.lastIndexOf("."));
+//		
+//		try {
+//			profile.transferTo(new File(folder + "\\" + renameFileName));
+//		} catch (IllegalStateException | IOException e) {
+//			e.printStackTrace();
+//		}
+//	
+//		}
+//		HashMap<String, String> map = new HashMap<String, String>();
+//		map.put("id", m.getId());
+//		map.put("profile", renameFileName);
+//		
+//		int result = mService.updateProfile(map);
+//		if(result > 0) {
+//			m.setProfile(renameFileName);
+//			model.addAttribute("loginUser", m);
+//		}
+//		
+//		return result;
+//		
+//		// Ensure that the compiler uses the '-parameters' flag. 이런 오류가 뜨면?
+//		
+//	}
 	
-		}
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("id", m.getId());
-		map.put("profile", renameFileName);
-		
-		int result = mService.updateProfile(map);
-		if(result > 0) {
-			m.setProfile(renameFileName);
-			model.addAttribute("loginUser", m);
-		}
-		
-		return result;
-		
-		// Ensure that the compiler uses the '-parameters' flag. 이런 오류가 뜨면?
-		
-	}
-	
-	@GetMapping("echeck")
-	@ResponseBody
-	public String checkEmail(@RequestParam("email") String email) {
-		MimeMessage mimeMessage = mailSender.createMimeMessage();
-		
-		String subject = "[SpringBoot] 이메일 확인";
-		String body = "<h1 align='center'>SpringBoot 이메일 확인</h1><br>";
-		body += "<div style='border: 3px solid green; text-align: center; font-size: 15px;'>본 메일은 이메일을 확인하기 위해 발송되었습니다.<br>";
-		body += "아래 숫자를 인증번호 확인란에 작성하여 확인해주시기 바랍니다.<br><br>";
-		
-		String random = "";
-		for(int i = 0; i < 5; i++) {
-			random += (int)(Math.random() * 10);
-		}
-		
-		body += "<span style='font-size: 30px; text-decoration: underline;'><b>" + random +"</b></span><br></div>";
-		
-		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
-		try {
-			mimeMessageHelper.setTo(email);
-			mimeMessageHelper.setSubject(subject);
-			mimeMessageHelper.setText(body, true);
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
-		mailSender.send(mimeMessage);
-		
-		return random;
-	}
+//	@GetMapping("echeck")
+//	@ResponseBody
+//	public String checkEmail(@RequestParam("email") String email) {
+//		MimeMessage mimeMessage = mailSender.createMimeMessage();
+//		
+//		String subject = "[SpringBoot] 이메일 확인";
+//		String body = "<h1 align='center'>SpringBoot 이메일 확인</h1><br>";
+//		body += "<div style='border: 3px solid green; text-align: center; font-size: 15px;'>본 메일은 이메일을 확인하기 위해 발송되었습니다.<br>";
+//		body += "아래 숫자를 인증번호 확인란에 작성하여 확인해주시기 바랍니다.<br><br>";
+//		
+//		String random = "";
+//		for(int i = 0; i < 5; i++) {
+//			random += (int)(Math.random() * 10);
+//		}
+//		
+//		body += "<span style='font-size: 30px; text-decoration: underline;'><b>" + random +"</b></span><br></div>";
+//		
+//		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+//		try {
+//			mimeMessageHelper.setTo(email);
+//			mimeMessageHelper.setSubject(subject);
+//			mimeMessageHelper.setText(body, true);
+//		} catch (MessagingException e) {
+//			e.printStackTrace();
+//		}
+//		mailSender.send(mimeMessage);
+//		
+//		return random;
+//	}
 	
 	@GetMapping("findIDPW")
 	public String findIdPW() {
@@ -460,23 +461,23 @@ public class MemberController {
 		}
 	}
 	
-	@GetMapping("linsert")
-	@ResponseBody
-	public int insertTodo(@ModelAttribute TodoList todo) {
-		return mService.insertTodo(todo);
-	}
-	
-	@GetMapping("lupdate")
-	@ResponseBody
-	public int updateTodo(@ModelAttribute TodoList todo) {
-		return mService.updateTodo(todo);
-	}
-	
-	@GetMapping("ldelete")
-	@ResponseBody
-	public int deleteTodo(@RequestParam("num") int num) {
-		return mService.deleteTodo(num);
-	}
+//	@GetMapping("linsert")
+//	@ResponseBody
+//	public int insertTodo(@ModelAttribute TodoList todo) {
+//		return mService.insertTodo(todo);
+//	}
+//	
+//	@GetMapping("lupdate")
+//	@ResponseBody
+//	public int updateTodo(@ModelAttribute TodoList todo) {
+//		return mService.updateTodo(todo);
+//	}
+//	
+//	@GetMapping("ldelete")
+//	@ResponseBody
+//	public int deleteTodo(@RequestParam("num") int num) {
+//		return mService.deleteTodo(num);
+//	}
 	
 	
 	}
