@@ -185,24 +185,21 @@ public class BoardController {
 	*/
 	
 	//GSON 버전
-	   @GetMapping("top")
-	   public void selectTop(HttpServletResponse response) {
-	      ArrayList<Board> list = bService.selectTop();
-	      
-	      response.setContentType("application/json; charset=UTF-8");
-	      
-	      // Gson gson = new Gson();
-	      
-//	      GsonBuilder gb = new GsonBuilder();
-	      GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
-	      Gson gson = gb.create();
-	      try {
-	         gson.toJson(list, response.getWriter());
-	      } catch (Exception e) {
-	         e.printStackTrace();
-
-		}	
-	}
+	/*
+	 * @GetMapping("top") public void selectTop(HttpServletResponse response) {
+	 * ArrayList<Board> list = bService.selectTop();
+	 * 
+	 * response.setContentType("application/json; charset=UTF-8");
+	 * 
+	 * // Gson gson = new Gson();
+	 * 
+	 * // GsonBuilder gb = new GsonBuilder(); GsonBuilder gb = new
+	 * GsonBuilder().setDateFormat("yyyy-MM-dd"); Gson gson = gb.create(); try {
+	 * gson.toJson(list, response.getWriter()); } catch (Exception e) {
+	 * e.printStackTrace();
+	 * 
+	 * } }
+	 */
 	   
 //	   // JSON 버전
 //	   // @GetMapping("rinsert") : HttpServletResponse 이거 사용했을 때!	
@@ -251,41 +248,41 @@ public class BoardController {
 //	   }
 
 	   // jackson 버전
-	   @GetMapping(value="rinsert", produces="application/json; charset=UTF-8")
-	   @ResponseBody
-	   public String insertReply(@ModelAttribute Reply r) {
-		   // 저장
-		   int result = bService.insertReply(r);
-		   // 가져오기
-		   ArrayList<Reply> list = bService.selectReplyList(r.getRefBoardId());
-		
-		   ObjectMapper om = new ObjectMapper();
-		   
-		   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		   om.setDateFormat(sdf);
-		   
-		   String strJson = null;
-		   try {
-			strJson = om.writeValueAsString(list);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		   return strJson;
-	   }
-	   
-	   
-	   @GetMapping("rdelete")
-	   @ResponseBody
-	   public int deleteReply(@RequestParam("rId") int rId) {
-		   return  bService.deleteReply(rId);
-		
-	   }
-	   
-	   @GetMapping("rupdate")
-	   @ResponseBody
-	   public int updateReply(@ModelAttribute Reply r) {
-		   return bService.updateReply(r);
-	   }
+//	   @GetMapping(value="rinsert", produces="application/json; charset=UTF-8")
+//	   @ResponseBody
+//	   public String insertReply(@ModelAttribute Reply r) {
+//		   // 저장
+//		   int result = bService.insertReply(r);
+//		   // 가져오기
+//		   ArrayList<Reply> list = bService.selectReplyList(r.getRefBoardId());
+//		
+//		   ObjectMapper om = new ObjectMapper();
+//		   
+//		   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//		   om.setDateFormat(sdf);
+//		   
+//		   String strJson = null;
+//		   try {
+//			strJson = om.writeValueAsString(list);
+//		} catch (JsonProcessingException e) {
+//			e.printStackTrace();
+//		}
+//		   return strJson;
+//	   }
+//	   
+//	   
+//	   @GetMapping("rdelete")
+//	   @ResponseBody
+//	   public int deleteReply(@RequestParam("rId") int rId) {
+//		   return  bService.deleteReply(rId);
+//		
+//	   }
+//	   
+//	   @GetMapping("rupdate")
+//	   @ResponseBody
+//	   public int updateReply(@ModelAttribute Reply r) {
+//		   return bService.updateReply(r);
+//	   }
 	   
 	   
 	   
