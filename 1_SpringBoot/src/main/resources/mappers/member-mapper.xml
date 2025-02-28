@@ -159,7 +159,7 @@
    
    <update id="updateMemberItem">
 	   		update member
-	   		set ${col} = #{val}
+	   		set ${column} = #{value}
 	   		where id=#{id}
    </update>
 </mapper>
