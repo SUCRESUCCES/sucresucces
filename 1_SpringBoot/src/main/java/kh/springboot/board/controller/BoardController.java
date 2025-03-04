@@ -49,7 +49,7 @@ public class BoardController {
 			HttpServletRequest request) {
 		int listCount = bService.getListCount(1); // 얘는 보드타입 1번인 일반 게시물을 가지고 온다는 인자
 
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5);	// 한 페이지의 글이 5개
 		ArrayList<Board> list = bService.selectBoardList(pi, 1);
 		// 보드타입
 

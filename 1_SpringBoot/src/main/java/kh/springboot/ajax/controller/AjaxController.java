@@ -197,4 +197,9 @@ public class AjaxController {
 		}
 		return mService.updateMemberItem(map);
 	}
+	
+	@PutMapping("status")
+	public int updateBoardStatus(@RequestBody HashMap<String, Object> map) {
+		return bService.updateBoardStatus(map);
+	}
 }
