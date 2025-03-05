@@ -68,6 +68,7 @@
 	</update>
 	
 	<select id="selectAttmBoardList" resultType="Attachment">
+		<!-- 썸네일만 나타낼 수 있는 곳 -->
 		select *
 		from attachment
 		where ATTM_STATUS = 'Y' 
@@ -75,6 +76,7 @@
 		<if test="bId == null">
 			and attm_level = 0
 		</if>
+		<!-- 상세보기를 했을 때? 글을 나타낼 수 있는 것-->
 		<if test="bID != null">
 			and ref_board_id = #{bId}
 		</if>
@@ -202,4 +204,10 @@
 			set board_status = #{status}
 			where board_id = #{id}
 		</update>
+		
+		<select id="selectAllAttm" resultType="Attachment">
+			select * from attachment
+			order by ref_board_id, attm_level, attm_id	
+			<!-- ref_board_id : 글번호(썸네일), attm_level : -->
+		</select>
 </mapper>

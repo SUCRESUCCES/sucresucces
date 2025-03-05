@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import kh.springboot.board.model.service.BoardService;
+import kh.springboot.board.model.vo.Attachment;
 import kh.springboot.board.model.vo.Board;
 import kh.springboot.board.model.vo.PageInfo;
 import kh.springboot.common.Pagination;
@@ -100,7 +100,7 @@ public class AdminController {
 			from board
 			where board_type = 1
 		*/
-		int listCount = bService.getListCount(-1);
+		int listCount = bService.getListCount(-1);	// 음수를 사용해서 뭐?(강의 09:05)
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
 		ArrayList<Board> list = bService.selectBoardList(pi, -1);
 		
@@ -109,10 +109,22 @@ public class AdminController {
 		model.addAttribute("loc", request.getRequestURI());
 		
 		return "boards";
-		
 	}
-	
-	
+
+	// 페이징 처리하고 데이터 넘기기
+	@GetMapping("attms")
+	public String selectAttms(@RequestParam(value="page", defaultValue="1") int currentPage, Model model, HttpServletRequest request) {
+		int listCount = bService.getListCount(-2);	// -2가 admin을 말하는 것임..								// 현재 url을 유지하기 위해서?
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+		ArrayList<Board> list = bService.selectBoardList(pi, -2);	// 그냥 2는 일반 게시물이기 때문에 -2로 admin을 찾아줌?
+		ArrayList<Attachment> aList = bService.selectAllAttm();
+		
+		model.addAttribute("list", list);
+		model.addAttribute("aList", aList).addAttribute("pi", pi).addAttribute("aList", aList);
+        model.addAttribute("loc", request.getRequestURI());
+
+		return "attms";
+	}
 	
 	
 	

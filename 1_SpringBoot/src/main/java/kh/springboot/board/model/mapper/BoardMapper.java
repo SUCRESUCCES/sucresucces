@@ -54,6 +54,8 @@ public interface BoardMapper {
 	ArrayList<Board> selectRecentBoards();
 
 	int updateBoardStatus(HashMap<String, Object> map);
+
+	ArrayList<Attachment> selectAllAttm();
 	
 
 }

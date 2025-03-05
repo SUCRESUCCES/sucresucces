@@ -99,4 +99,8 @@ public class BoardService {
 	public int updateBoardStatus(HashMap<String, Object> map) {
 		return mapper.updateBoardStatus(map);
 	}
+
+	public ArrayList<Attachment> selectAllAttm() {
+		return mapper.selectAllAttm();
+	}
 }
