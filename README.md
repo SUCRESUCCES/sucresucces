@@ -3,6 +3,7 @@
 ![header](https://capsule-render.vercel.app/api?type=blur&color=auto&height=300&section=header&text=minjoo's%20Github&fontSize=90)
 
 ![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=sucresucces&layout=compact&theme=dracula)
+<a href="https://github.com/JeongMinIsBest"><img align="center" style="height:180px" src="https://github-readme-stats.vercel.app/api/top-langs/?username=JeongMinIsBest&layout=compact&hide_border=true&bg_color=30,CED8F6,588beb&title_color=fff&text_color=fff" /></a>
 
 <details>
 <summary>
