@@ -3,8 +3,6 @@
 ![header](https://capsule-render.vercel.app/api?type=blur&color=auto&height=300&section=header&text=minjoo's%20Github&fontSize=90)
 
 ![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=sucresucces&layout=compact&theme=dracula)
-<a href="https://github.com/sucresucces"><img align="center" style="height:180px" src="https://github-readme-stats.vercel.app/api/top-langs/?username=sucresucces&layout=compact&hide_border=true&bg_color=30,CED8F6,588beb&title_color=fff&text_color=fff" /></a>
-
 <details>
 <summary>
   <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Eyes.png" alt="Eyes" width="2%" /> 내가 지금 배우는 ... 
