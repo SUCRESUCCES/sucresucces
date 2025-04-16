@@ -20,7 +20,6 @@
 ![spring](https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white) 
 
 </details>
-출처: https://hulrud.tistory.com/3 [주독야독:티스토리]
 <!--
 **SUCRESUCCES/sucresucces** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
