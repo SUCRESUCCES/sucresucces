@@ -49,13 +49,11 @@
 ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)  
 
 
+</div>
+
 <a href="https://github.com/devxb/gitanimals">
   <img src="https://render.gitanimals.org/lines/{username}?pet-id=1" width="1000" height="120"/>
 </a>
-
-</div>
-
-
 
 <!--
 ![header](https://capsule-render.vercel.app/api?type=blur&color=auto&height=300&section=header&text=minjoo's%20Github&fontSize=90)
