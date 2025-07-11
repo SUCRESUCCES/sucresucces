@@ -51,13 +51,14 @@
 
 </div>
 
-<a href="https://www.gitanimals.org/en_US?utm_medium=image&utm_source=SUCRESUCCES&utm_content=farm">
-<img
-  src="https://render.gitanimals.org/farms/SUCRESUCCES"
-  width="600"
-  height="300"
-/>
+</div>
+
+<div align="center">
+<a href="https://github.com/devxb/gitanimals">
+  <img src="https://render.gitanimals.org/lines/{sucresucces}?pet-id=1" width="1000" height="120"/>
 </a>
+
+</div>
 
 <!--
 ![header](https://capsule-render.vercel.app/api?type=blur&color=auto&height=300&section=header&text=minjoo's%20Github&fontSize=90)
