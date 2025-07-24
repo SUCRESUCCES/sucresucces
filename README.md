@@ -48,7 +48,8 @@
 ![Google Docs](https://img.shields.io/badge/Google%20Docs-4285F4?style=for-the-badge&logo=google&logoColor=white)  
 ![SourceTree](https://img.shields.io/badge/SourceTree-0052CC?style=for-the-badge&logo=sourcetree&logoColor=white)  
 ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)  
-![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)
+![Discord](https://img.shields.io/badge/Discord-5865F2?logo=discord&logoColor=white&style=flat)
+
 
 
 
