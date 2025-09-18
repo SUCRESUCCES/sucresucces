@@ -2,9 +2,8 @@
 
 ![header](https://capsule-render.vercel.app/api?type=blur&color=auto&height=300&section=header&text=minjoo's%20Github&fontSize=90)
 
-<!--
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=sucresucces&layout=compact&theme=dracula)
--->
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=sucresucces&layout=compact)
+
 <details>
 <summary>
 🚀 Skills
